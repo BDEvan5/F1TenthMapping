@@ -52,8 +52,9 @@ class MapFiller:
         self.map_img = boundary_fill(self.map_img, 76, 65)
 
         
-        self.map_img[self.map_img != 0] = 1.
-        img = Image.fromarray(self.map_img.astype(np.uint8))
+        self.map_img[self.map_img == 0] = 255
+        self.map_img[self.map_img < 128] = 0
+        img = Image.fromarray(self.map_img.T.astype(np.uint8)).transpose(Image.FLIP_TOP_BOTTOM)
         img.save('maps/' + self.map_name + '_filled.png')
 
         plt.figure(1)
