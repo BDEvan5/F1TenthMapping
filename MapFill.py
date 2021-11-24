@@ -26,12 +26,24 @@ def MapFiller(map_name, pts, crop_x, crop_y):
     if len(map_img.shape) == 3:
         map_img = map_img[:, :, 0]
 
-    map_img[map_img <= 128.] = 1.
+    map_img[map_img <= 210] = 1.
+    # map_img[map_img <= 128.] = 1.
     map_img[map_img > 128.] = 0.
 
 
     map_img = map_img.T
     map_img = map_img[crop_x[0]:crop_x[1], crop_y[0]:crop_y[1]]
+
+    map_img = Image.fromarray(map_img)
+    resize = 0.2
+    map_img = map_img.resize((int(map_img.size[0] * resize), int(map_img.size[1] * resize)))
+    map_img = np.array(map_img).astype(np.float64)
+    map_img[map_img > 0.40] = 1
+
+    plt.figure(1)
+    plt.imshow(map_img.T, origin='lower')
+
+    plt.show()
 
     for pt in pts:
         map_img = boundary_fill(map_img, pt[0], pt[1])
@@ -58,7 +70,8 @@ def view_map(map_name):
     if len(map_img.shape) == 3:
         map_img = map_img[:, :, 0]
 
-    map_img[map_img <= 128.] = 1.
+    map_img[map_img <= 210] = 1.
+    # map_img[map_img <= 128.] = 1.
     map_img[map_img > 128.] = 0.
 
     plt.figure(1)
@@ -91,9 +104,12 @@ def run_porto():
 
 def run_torino():
     view_map("torino")
-    crop_y = [120, 580]
-    crop_x = [230, 460]
-    pts = [[0, 0]]
+    # crop_x = [480, 950]
+    # crop_y = [250, 1220]
+    crop_y = [120, 610]
+    crop_x = [240, 480]
+    # pts = [[0, 0]]
+    pts = []
 
     MapFiller('torino', pts, crop_x, crop_y)
 
@@ -108,10 +124,32 @@ def run_berlin():
     MapFiller('berlin', pts, crop_x, crop_y)
 
 
+def run_racetrack():
+    view_map("race_track")
+
+    crop_x = [480, 1050]
+    crop_y = [490, 940]
+    pts = [[0, 0]]
+    # pts = []
+
+    MapFiller('race_track', pts, crop_x, crop_y)
+
+
+def run_example_map():
+    view_map("example_map")
+
+    crop_x = [350, 1300]
+    crop_y = [420, 1200]
+    pts = [[0, 0], [40, 60]]
+    # pts = []
+
+    MapFiller('example_map', pts, crop_x, crop_y)
+
+
 if __name__ == '__main__':
-    sys.setrecursionlimit(10000)
+    sys.setrecursionlimit(1000000)
     # run_porto()
     # run_torino()
-    run_berlin()
-
-
+    # run_berlin()
+    # run_racetrack()
+    run_example_map()

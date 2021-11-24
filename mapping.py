@@ -121,7 +121,7 @@ class PreMap:
             loc = [x, y]
             search_list.append(loc)
 
-        pt = start = np.array([0, 0])
+        pt = start = np.array([0, 0]) #TODO: start from map position
         self.cline = [pt]
         th = self.stheta
         while (lib.get_distance(pt, start) > d_search/2 or len(self.cline) < 10) and len(self.cline) < 500:
@@ -323,6 +323,7 @@ class PreMap:
         nws, pws = np.array(nws), np.array(pws)
 
         self.widths =  np.concatenate([nws[:, None], pws[:, None]], axis=-1)     
+        self.widths *= 0.2 #TODO: remove
 
     def render_map(self, wait=False):
         plt.figure(2)
