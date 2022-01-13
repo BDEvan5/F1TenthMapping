@@ -673,7 +673,7 @@ def run_pre_map():
     fname = "config_test"
     conf = lib.load_conf(fname)
     # map_name = "example_map"
-    map_name = "porto"
+    map_name = "blackbox1"
     
 
     pre_map = PreMap(conf, map_name)
