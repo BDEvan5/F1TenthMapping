@@ -34,11 +34,11 @@ def MapFiller(map_name, pts, crop_x, crop_y):
     map_img = map_img.T
     map_img = map_img[crop_x[0]:crop_x[1], crop_y[0]:crop_y[1]]
 
-    map_img = Image.fromarray(map_img)
-    resize = 0.2
-    map_img = map_img.resize((int(map_img.size[0] * resize), int(map_img.size[1] * resize)))
-    map_img = np.array(map_img).astype(np.float64)
-    map_img[map_img > 0.40] = 1
+    # map_img = Image.fromarray(map_img)
+    # resize = 0.2
+    # map_img = map_img.resize((int(map_img.size[0] * resize), int(map_img.size[1] * resize)))
+    # map_img = np.array(map_img).astype(np.float64)
+    # map_img[map_img > 0.40] = 1
 
     plt.figure(1)
     plt.imshow(map_img.T, origin='lower')
@@ -48,7 +48,7 @@ def MapFiller(map_name, pts, crop_x, crop_y):
     for pt in pts:
         map_img = boundary_fill(map_img, pt[0], pt[1])
     
-    map_img[map_img == 0] = 255
+    map_img[map_img <0.8] = 255
     map_img[map_img < 128] = 0
     img = Image.fromarray(map_img.T.astype(np.uint8)).transpose(Image.FLIP_TOP_BOTTOM)
 
@@ -139,11 +139,68 @@ def run_example_map():
     view_map("example_map")
 
     crop_x = [350, 1300]
-    crop_y = [420, 1200]
+    crop_y = [630, 1200]
     pts = [[0, 0], [40, 60]]
     # pts = []
 
     MapFiller('example_map', pts, crop_x, crop_y)
+
+
+
+def run_circle():
+    view_map("circle")
+
+    crop_x = [850, 1250]
+    crop_y = [630, 1020]
+    pts = [[0, 0]]
+    # pts = []
+
+    MapFiller('circle', pts, crop_x, crop_y)
+
+
+
+def run_columbia():
+    view_map("columbia_small")
+
+    crop_x = [780, 1460]
+    crop_y = [640, 1130]
+    pts = [[0, 0]]
+    # pts = []
+
+    MapFiller('columbia_small', pts, crop_x, crop_y)
+
+
+def run_aut():
+    view_map("f1_aut_wide")
+
+    crop_x = [820, 1400]
+    crop_y = [550, 1050]
+    pts = [[0, 0]]
+    # pts = []
+
+    MapFiller('f1_aut_wide', pts, crop_x, crop_y)
+
+
+def run_torino_small():
+    view_map("torino_redraw_small")
+
+    crop_x = [170, 650]
+    crop_y = [180, 370]
+    pts = [[0, 0]]
+    # pts = []
+
+    MapFiller('torino_redraw_small', pts, crop_x, crop_y)
+
+
+def run_blackbox():
+    view_map("blackbox1")
+
+    crop_x = [430, 1060]
+    crop_y = [750, 1550]
+    pts = [[0, 0]]
+    # pts = []
+
+    MapFiller('blackbox1', pts, crop_x, crop_y)
 
 
 if __name__ == '__main__':
@@ -152,4 +209,10 @@ if __name__ == '__main__':
     # run_torino()
     # run_berlin()
     # run_racetrack()
-    run_example_map()
+    # run_example_map()
+
+    # run_circle()
+    # run_columbia()
+    # run_aut()
+    # run_torino_small()
+    run_blackbox()
