@@ -108,7 +108,7 @@ class PreMap:
     def find_centerline(self, show=True):
         dt = self.dt
 
-        d_search = 1
+        d_search = 0.8
         n_search = 11
         dth = (np.pi * 4/5) / (n_search-1)
 
@@ -177,6 +177,11 @@ class PreMap:
     def xy_to_row_column(self, pt_xy):
         c = int((pt_xy[0] - self.origin[0]) / self.resolution)
         r = int((pt_xy[1] - self.origin[1]) / self.resolution)
+
+        if c >= self.dt.shape[1]:
+            c = self.dt.shape[1] - 1
+        if r >= self.dt.shape[0]:
+            r = self.dt.shape[0] - 1
 
         return c, r
 
@@ -673,7 +678,8 @@ def run_pre_map():
     fname = "config_test"
     conf = lib.load_conf(fname)
     # map_name = "example_map"
-    map_name = "blackbox1"
+    # map_name = "columbia_small"
+    map_name = "f1_aut_wide"
     
 
     pre_map = PreMap(conf, map_name)

@@ -35,7 +35,7 @@ def MapFiller(map_name, pts, crop_x, crop_y):
     map_img = map_img[crop_x[0]:crop_x[1], crop_y[0]:crop_y[1]]
 
     map_img = Image.fromarray(map_img)
-    resize = 0.6
+    resize = 0.4
     map_img = map_img.resize((int(map_img.size[0] * resize), int(map_img.size[1] * resize)))
     map_img = np.array(map_img).astype(np.float64)
     map_img[map_img > 0.40] = 1
@@ -211,8 +211,8 @@ if __name__ == '__main__':
     # run_racetrack()
     # run_example_map()
 
-    run_circle()
+    # run_circle()
     # run_columbia()
-    # run_aut()
+    run_aut()
     # run_torino_small()
     # run_blackbox()
