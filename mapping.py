@@ -328,7 +328,8 @@ class PreMap:
         nws, pws = np.array(nws), np.array(pws)
 
         self.widths =  np.concatenate([nws[:, None], pws[:, None]], axis=-1)     
-        self.widths *= 0.2 #TODO: remove
+        # self.widths *= 0.2 #TODO: remove
+        self.widths *= 0.7 #TODO: remove
 
     def render_map(self, wait=False):
         plt.figure(2)
@@ -405,6 +406,9 @@ class PreMap:
 
         # self.vs = Max_velocity(self.wpts, self.conf, False)
         self.vs = Max_velocity(self.wpts, self.conf, True)
+
+        plt.figure(4)
+        plt.plot(self.vs)
 
     def save_map_opti(self):
         filename = 'maps/' + self.map_name + '_opti.csv'
@@ -584,6 +588,9 @@ def Max_velocity(pts, conf, show=False):
 
     x0 = ca.vertcat(dx0, dy0, dt0, f_long0, f_lat0)
 
+    #! The ubx and lbx are wrong, the current parameters are for each component but there is no check for total velocty.
+    #TODO: the optimisation must limit the total velocity to below the max velocity
+
     # make lbx, ubx
     # lbx = [-max_v] * N + [-max_v] * N + [0] * N1 + [-f_long_max] * N1 + [-f_max] * N1
     lbx = [-max_v] * N + [0] * N + [0] * N1 + [-ca.inf] * N1 + [-f_max] * N1
@@ -617,6 +624,7 @@ def Max_velocity(pts, conf, show=False):
     # print(f"Dy: {dy.T}")
 
     vs = (dx**2 + dy**2)**0.5
+    vs = np.clip(vs, 0, max_v)
 
     if show:
         plt.figure(1)
@@ -678,8 +686,8 @@ def run_pre_map():
     fname = "config_test"
     conf = lib.load_conf(fname)
     # map_name = "example_map"
-    # map_name = "columbia_small"
-    map_name = "f1_aut_wide"
+    map_name = "columbia_small"
+    # map_name = "f1_aut_wide"
     
 
     pre_map = PreMap(conf, map_name)
