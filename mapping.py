@@ -7,8 +7,8 @@ import casadi as ca
 from scipy import ndimage 
 import io
 
-import toy_auto_race.Utils.LibFunctions as lib
-
+# import toy_auto_race.Utils.LibFunctions as lib
+import LibFunctions as lib
 
 
 class PreMap:
@@ -32,6 +32,17 @@ class PreMap:
     def run_conversion(self):
         self.read_yaml_file()
         self.load_map()
+
+
+        # new_img = np.copy(self.map_img)
+        # new_img[self.map_img==255] = 0
+        # new_img[self.map_img==0] = 255
+        # self.map_img = new_img
+         
+        # plt.figure(2)
+        # plt.imshow(self.map_img, origin='lower')
+        # plt.pause(0.0001)
+
 
         self.dt = ndimage.distance_transform_edt(self.map_img) 
         self.dt = np.array(self.dt *self.resolution)
@@ -85,7 +96,8 @@ class PreMap:
 
         self.resolution = yaml_file['resolution']
         self.origin = yaml_file['origin']
-        self.stheta = yaml_file['start_pose'][2]
+        # self.stheta = yaml_file['start_pose'][2]
+        self.stheta = 0
         self.map_img_name = yaml_file['image']
 
     def load_map(self):
@@ -104,11 +116,13 @@ class PreMap:
 
         self.height = self.map_img.shape[1]
         self.width = self.map_img.shape[0]
- 
+
+    
     def find_centerline(self, show=True):
         dt = self.dt
 
-        d_search = 0.8
+        # d_search = 0.8
+        d_search = 0.5
         n_search = 11
         dth = (np.pi * 4/5) / (n_search-1)
 
@@ -144,6 +158,7 @@ class PreMap:
 
             if show:
                 self.plot_raceline_finding()
+                # plt.show()
 
             th = lib.get_bearing(self.cline[-2], pt)
             print(f"Adding pt: {pt}")
@@ -329,7 +344,7 @@ class PreMap:
 
         self.widths =  np.concatenate([nws[:, None], pws[:, None]], axis=-1)     
         # self.widths *= 0.2 #TODO: remove
-        self.widths *= 0.8 #TODO: remove
+        self.widths *= 0.6 #TODO: remove
 
     def render_map(self, wait=False):
         plt.figure(2)
@@ -686,8 +701,10 @@ def run_pre_map():
     fname = "config_test"
     conf = lib.load_conf(fname)
     # map_name = "porto"
-    map_name = "columbia_small"
+    map_name = "levine_blocked"
+    # map_name = "columbia_small"
     # map_name = "f1_aut_wide"
+    # map_name = "berlin"
     
 
     pre_map = PreMap(conf, map_name)
