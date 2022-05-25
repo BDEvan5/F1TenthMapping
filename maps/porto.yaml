@@ -1,7 +1,7 @@
 
 free_thresh: 0.196
-# image: porto.pgm
-image: porto.png
+image: porto.pgm
+# image: porto.png
 negate: 0
 occupied_thresh: 0.65
 origin:

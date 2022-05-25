@@ -702,9 +702,9 @@ def convert_pts_s_th(pts):
 def run_pre_map():
     fname = "config_test"
     conf = lib.load_conf(fname)
-    # map_name = "porto"
+    map_name = "porto"
     # map_name = "levine_blocked"
-    map_name = "columbia_small"
+    # map_name = "columbia_small"
     # map_name = "f1_aut_wide"
     # map_name = "berlin"
     # map_name = "race_track"
