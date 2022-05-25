@@ -97,7 +97,7 @@ class PreMap:
         self.resolution = yaml_file['resolution']
         self.origin = yaml_file['origin']
         # self.stheta = yaml_file['start_pose'][2]
-        self.stheta = 0
+        self.stheta = -np.pi/2
         self.map_img_name = yaml_file['image']
 
     def load_map(self):
@@ -121,8 +121,8 @@ class PreMap:
     def find_centerline(self, show=True):
         dt = self.dt
 
-        # d_search = 0.8
-        d_search = 0.5
+        d_search = 1
+        # d_search = 0.5
         n_search = 11
         dth = (np.pi * 4/5) / (n_search-1)
 
@@ -137,7 +137,8 @@ class PreMap:
 
         pt = start = np.array([0, 0]) #TODO: start from map position
         self.cline = [pt]
-        th = self.stheta
+        # th = self.stheta
+        th = np.pi
         while (lib.get_distance(pt, start) > d_search/2 or len(self.cline) < 10) and len(self.cline) < 500:
             vals = []
             self.search_space = []
@@ -704,7 +705,8 @@ def run_pre_map():
     # map_name = "levine_blocked"
     # map_name = "columbia_small"
     # map_name = "f1_aut_wide"
-    map_name = "berlin"
+    # map_name = "berlin"
+    map_name = "race_track"
     
 
     pre_map = PreMap(conf, map_name)

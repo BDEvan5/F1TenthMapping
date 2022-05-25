@@ -239,7 +239,7 @@ if __name__ == '__main__':
     # run_porto()
     # run_torino()
     # run_berlin()
-    # run_racetrack()
+    run_racetrack()
     # run_example_map()
 
     # run_circle()
@@ -247,4 +247,4 @@ if __name__ == '__main__':
     # run_aut()
     # run_torino_small()
     # run_blackbox()
-    run_levine()
+    # run_levine()
