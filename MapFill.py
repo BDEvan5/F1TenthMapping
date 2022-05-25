@@ -236,10 +236,10 @@ def run_levine():
 
 if __name__ == '__main__':
     sys.setrecursionlimit(10000000)
-    # run_porto()
+    run_porto()
     # run_torino()
     # run_berlin()
-    run_racetrack()
+    # run_racetrack()
     # run_example_map()
 
     # run_circle()

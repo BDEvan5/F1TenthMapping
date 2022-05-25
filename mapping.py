@@ -39,9 +39,9 @@ class PreMap:
         # new_img[self.map_img==0] = 255
         # self.map_img = new_img
          
-        # plt.figure(2)
-        # plt.imshow(self.map_img, origin='lower')
-        # plt.pause(0.0001)
+        plt.figure(2)
+        plt.imshow(self.map_img, origin='lower')
+        plt.pause(0.0001)
 
 
         self.dt = ndimage.distance_transform_edt(self.map_img) 
@@ -138,7 +138,8 @@ class PreMap:
         pt = start = np.array([0, 0]) #TODO: start from map position
         self.cline = [pt]
         # th = self.stheta
-        th = np.pi
+        # th = -np.pi
+        th = 0
         while (lib.get_distance(pt, start) > d_search/2 or len(self.cline) < 10) and len(self.cline) < 500:
             vals = []
             self.search_space = []
@@ -703,10 +704,11 @@ def run_pre_map():
     conf = lib.load_conf(fname)
     # map_name = "porto"
     # map_name = "levine_blocked"
-    # map_name = "columbia_small"
+    map_name = "columbia_small"
     # map_name = "f1_aut_wide"
     # map_name = "berlin"
-    map_name = "race_track"
+    # map_name = "race_track"
+    # map_name = "example_map"
     
 
     pre_map = PreMap(conf, map_name)
