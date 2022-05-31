@@ -497,8 +497,8 @@ def MinCurvatureTrajectory(pts, nvecs, ws):
 
     nlp = {\
     'x': ca.vertcat(n, th),
-    # 'f': ca.sumsqr(sub_cmplx1(th[1:], th[:-1])), 
-    'f': ca.sumsqr(track_length(n)), 
+    'f': ca.sumsqr(sub_cmplx1(th[1:], th[:-1])), 
+    # 'f': ca.sumsqr(track_length(n)), 
     'g': ca.vertcat(
                 # dynamic constraints
                 n[1:] - (n[:-1] + d_n(n, th)),
@@ -702,10 +702,10 @@ def convert_pts_s_th(pts):
 def run_pre_map():
     fname = "config_test"
     conf = lib.load_conf(fname)
-    map_name = "porto"
+    # map_name = "porto"
     # map_name = "levine_blocked"
     # map_name = "columbia_small"
-    # map_name = "f1_aut_wide"
+    map_name = "f1_aut_wide"
     # map_name = "berlin"
     # map_name = "race_track"
     # map_name = "example_map"
