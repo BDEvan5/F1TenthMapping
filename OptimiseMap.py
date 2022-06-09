@@ -53,18 +53,19 @@ class OptimiseMap:
         self.dt = ndimage.distance_transform_edt(self.map_img) 
         self.dt = np.array(self.dt *self.resolution)
 
-        n_set = MinCurvatureTrajectory(self.cline, self.nvecs, self.widths*0.75)
+        width_sf = 0.5
+        n_set = MinCurvatureTrajectory(self.cline, self.nvecs, self.widths*width_sf)
 
         deviation = np.array([self.nvecs[:, 0] * n_set[:, 0], self.nvecs[:, 1] * n_set[:, 0]]).T
         self.wpts = self.cline + deviation
 
         # self.vs = Max_velocity(self.wpts, self.conf, False)
-        # self.vs = Max_velocity(self.wpts, self.conf, True)
+        self.vs = Max_velocity(self.wpts, self.conf, True)
 
         # plt.figure(4)
         # plt.plot(self.vs)
 
-        # self.save_map_opti()
+        self.save_map_opti()
         self.render_map(True)
 
     def load_track_pts(self):
@@ -285,8 +286,7 @@ def Max_velocity(pts, conf, show=False):
     g = conf.g
     l_f = conf.l_f
     l_r = conf.l_r
-    safety_f = conf.force_f
-    f_max = mu * m * g #* safety_f
+    f_max = mu * m * g 
     f_long_max = l_f / (l_r + l_f) * f_max
     max_v = conf.max_v  
     max_a = conf.max_a
@@ -301,6 +301,7 @@ def Max_velocity(pts, conf, show=False):
     d_x = ca.MX.sym('d_x', N-1)
     d_y = ca.MX.sym('d_y', N-1)
     vel = ca.Function('vel', [d_x, d_y], [ca.sqrt(ca.power(d_x, 2) + ca.power(d_y, 2))])
+    # f_total = ca.Function('vel', [d_x, d_y], [ca.sqrt(ca.power(d_x, 2) + ca.power(d_y, 2))])
 
     dx = ca.MX.sym('dx', N)
     dy = ca.MX.sym('dy', N)
@@ -324,6 +325,8 @@ def Max_velocity(pts, conf, show=False):
                     ca.sqrt(ca.power(f_long, 2) + ca.power(f_lat, 2)),
 
                     # boundary constraints
+                    vel(dx[:-1], dy[:-1]),
+                    vel(f_long, f_lat) # gets total force
                     # dx[0], dy[0]
                 ) \
     }
@@ -355,8 +358,8 @@ def Max_velocity(pts, conf, show=False):
     # ubx = [max_v] * N + [max_v] * N + [10] * N1 + [f_long_max] * N1 + [f_max] * N1
 
     #make lbg, ubg
-    lbg = [0] * N1 + [0] * N + [0] * 2 * N1 + [0] * N1 #+ [0] * 2 
-    ubg = [0] * N1 + [0] * N + [0] * 2 * N1 + [ca.inf] * N1 #+ [0] * 2 
+    lbg = [0] * N1 + [0] * N + [0] * 2 * N1 + [0] * N1 + [0] * N1 + [-f_max] * N1 #+ [0] * 2 
+    ubg = [0] * N1 + [0] * N + [0] * 2 * N1 + [ca.inf] * N1 + [max_v] * N1 + [f_max] * N1  #+ [0] * 2 
 
     r = S(x0=x0, lbg=lbg, ubg=ubg, lbx=lbx, ubx=ubx)
 
