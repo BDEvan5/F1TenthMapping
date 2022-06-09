@@ -29,22 +29,6 @@ class OptimiseMap:
         self.wpts = None
         self.vs = None
 
-    def run_conversion(self):
-        self.read_yaml_file()
-        self.load_map()
-         
-        plt.figure(2)
-        plt.imshow(self.map_img, origin='lower')
-        plt.pause(0.0001)
-
-
-        self.dt = ndimage.distance_transform_edt(self.map_img) 
-        self.dt = np.array(self.dt *self.resolution)
-
-        self.save_map_opti()
-
-        self.render_map(True)
-
     def run_opti(self):
         self.read_yaml_file()
         self.load_map()
@@ -53,7 +37,7 @@ class OptimiseMap:
         self.dt = ndimage.distance_transform_edt(self.map_img) 
         self.dt = np.array(self.dt *self.resolution)
 
-        width_sf = 0.5
+        width_sf = 0.7
         n_set = MinCurvatureTrajectory(self.cline, self.nvecs, self.widths*width_sf)
 
         deviation = np.array([self.nvecs[:, 0] * n_set[:, 0], self.nvecs[:, 1] * n_set[:, 0]]).T
@@ -326,7 +310,7 @@ def Max_velocity(pts, conf, show=False):
 
                     # boundary constraints
                     vel(dx[:-1], dy[:-1]),
-                    vel(f_long, f_lat) # gets total force
+                    # vel(f_long, f_lat) # gets total force
                     # dx[0], dy[0]
                 ) \
     }
@@ -347,9 +331,6 @@ def Max_velocity(pts, conf, show=False):
 
     x0 = ca.vertcat(dx0, dy0, dt0, f_long0, f_lat0)
 
-    #! The ubx and lbx are wrong, the current parameters are for each component but there is no check for total velocty.
-    #TODO: the optimisation must limit the total velocity to below the max velocity
-
     # make lbx, ubx
     # lbx = [-max_v] * N + [-max_v] * N + [0] * N1 + [-f_long_max] * N1 + [-f_max] * N1
     lbx = [-max_v] * N + [0] * N + [0] * N1 + [-ca.inf] * N1 + [-f_max] * N1
@@ -358,8 +339,8 @@ def Max_velocity(pts, conf, show=False):
     # ubx = [max_v] * N + [max_v] * N + [10] * N1 + [f_long_max] * N1 + [f_max] * N1
 
     #make lbg, ubg
-    lbg = [0] * N1 + [0] * N + [0] * 2 * N1 + [0] * N1 + [0] * N1 + [-f_max] * N1 #+ [0] * 2 
-    ubg = [0] * N1 + [0] * N + [0] * 2 * N1 + [ca.inf] * N1 + [max_v] * N1 + [f_max] * N1  #+ [0] * 2 
+    lbg = [0] * N1 + [0] * N + [0] * 2 * N1 + [0] * N1 + [0] * N1 #+ [-f_max] * N1 #+ [0] * 2 
+    ubg = [0] * N1 + [0] * N + [0] * 2 * N1 + [ca.inf] * N1 + [max_v] * N1 #+ [f_max] * N1  #+ [0] * 2 
 
     r = S(x0=x0, lbg=lbg, ubg=ubg, lbx=lbx, ubx=ubx)
 
@@ -403,7 +384,7 @@ def Max_velocity(pts, conf, show=False):
         plt.plot(t[:-1], f_long)
         plt.plot(t[:-1], f_lat)
         plt.plot(t[:-1], f_t, linewidth=3)
-        plt.ylim([-25, 25])
+        # plt.ylim([-25, 25])
         plt.plot(t, np.ones_like(t) * f_max, '--')
         plt.plot(t, np.ones_like(t) * -f_max, '--')
         plt.plot(t, np.ones_like(t) * f_long_max, '--')
@@ -446,13 +427,13 @@ def run_opti():
     fname = "config_test"
     conf = lib.load_conf(fname)
     # map_name = "porto"
-    # map_name = "levine_blocked"
-    # map_name = "columbia_small"
-    map_name = "f1_aut_wide"
     # map_name = "berlin"
     # map_name = "race_track"
-    # map_name = "example_map"
     
+    # map_name = "levine_blocked"
+    map_name = "columbia_small"
+    # map_name = "example_map"
+    # map_name = "f1_aut_wide"
 
     pre_map = OptimiseMap(conf, map_name)
     pre_map.run_opti()

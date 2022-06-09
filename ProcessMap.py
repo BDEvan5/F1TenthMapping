@@ -33,9 +33,9 @@ class ProcessMap:
         self.read_yaml_file()
         self.load_map()
          
-        plt.figure(2)
-        plt.imshow(self.map_img, origin='lower')
-        plt.pause(0.0001)
+        # plt.figure(2)
+        # plt.imshow(self.map_img, origin='lower')
+        # plt.pause(0.0001)
 
         self.dt = ndimage.distance_transform_edt(self.map_img) 
         self.dt = np.array(self.dt *self.resolution)
@@ -149,7 +149,7 @@ class ProcessMap:
         dt = self.dt
 
         # d_search = 1
-        d_search = 0.5
+        d_search = 0.8
         n_search = 21
         dth = (np.pi * 4/5) / (n_search-1)
 
@@ -197,7 +197,7 @@ class ProcessMap:
         print(f"Raceline found --> n: {len(self.cline)}")
         if show:
             self.plot_raceline_finding(True)
-        self.plot_raceline_finding(False)
+        # self.plot_raceline_finding(False)
 
     def plot_raceline_finding(self, wait=False):
         plt.figure(1)
@@ -511,13 +511,13 @@ def run_pre_map():
     fname = "config_test"
     conf = lib.load_conf(fname)
     # map_name = "porto"
-    # map_name = "levine_blocked"
-    # map_name = "columbia_small"
-    map_name = "f1_aut_wide"
     # map_name = "berlin"
     # map_name = "race_track"
-    # map_name = "example_map"
     
+    # map_name = "f1_aut_wide"
+    # map_name = "example_map"
+    map_name = "levine_blocked"
+    # map_name = "columbia_small"
 
     pre_map = ProcessMap(conf, map_name)
     pre_map.run_conversion()
