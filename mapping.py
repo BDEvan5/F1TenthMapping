@@ -346,7 +346,7 @@ class PreMap:
 
         self.widths =  np.concatenate([nws[:, None], pws[:, None]], axis=-1)     
         # self.widths *= 0.2 #TODO: remove
-        self.widths *= 0.6 #TODO: remove
+        # self.widths *= 0.6 #TODO: remove
 
     def render_map(self, wait=False):
         plt.figure(2)
@@ -448,8 +448,8 @@ def MinCurvatureTrajectory(pts, nvecs, ws):
     """
     This function uses optimisation to minimise the curvature of the path
     """
-    w_min = - ws[:, 0] * 0.9
-    w_max = ws[:, 1] * 0.9
+    w_min = - ws[:, 0] 
+    w_max = ws[:, 1] 
     th_ns = [lib.get_bearing([0, 0], nvecs[i, 0:2]) for i in range(len(nvecs))]
 
     N = len(pts)
