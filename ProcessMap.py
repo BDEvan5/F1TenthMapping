@@ -515,8 +515,8 @@ def run_pre_map():
     # map_name = "race_track"
     
     # map_name = "f1_aut_wide"
-    # map_name = "example_map"
-    map_name = "levine_blocked"
+    map_name = "example_map"
+    # map_name = "levine_blocked"
     # map_name = "columbia_small"
 
     pre_map = ProcessMap(conf, map_name)

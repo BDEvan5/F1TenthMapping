@@ -240,11 +240,11 @@ if __name__ == '__main__':
     # run_torino()
     # run_berlin()
     # run_racetrack()
-    # run_example_map()
+    run_example_map()
 
     # run_circle()
     # run_columbia()
     # run_aut()
     # run_torino_small()
     # run_blackbox()
-    run_levine()
+    # run_levine()

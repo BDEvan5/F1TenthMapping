@@ -166,13 +166,15 @@ class PreMap:
 
         plt.tight_layout()
 
-        plt.savefig("Imgs/f1_aut_track.svg", bbox_inches='tight', pad_inches=0.1)
+        plt.savefig(f"Imgs/{self.map_name}_track.svg", bbox_inches='tight', pad_inches=0.1)
 
         plt.show()
 
 
 if __name__ == "__main__":
-    map_name = 'f1_aut_wide'
+    # map_name = 'f1_aut_wide'
+    map_name = 'example_map'
+    # map_name = 'columbia_small'
 
     fname = "config_test"
     conf = lib.load_conf(fname)

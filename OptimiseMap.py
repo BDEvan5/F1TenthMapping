@@ -431,8 +431,8 @@ def run_opti():
     # map_name = "race_track"
     
     # map_name = "levine_blocked"
-    map_name = "columbia_small"
-    # map_name = "example_map"
+    # map_name = "columbia_small"
+    map_name = "example_map"
     # map_name = "f1_aut_wide"
 
     pre_map = OptimiseMap(conf, map_name)

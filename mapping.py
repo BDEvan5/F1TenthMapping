@@ -705,10 +705,10 @@ def run_pre_map():
     # map_name = "porto"
     # map_name = "levine_blocked"
     # map_name = "columbia_small"
-    map_name = "f1_aut_wide"
+    # map_name = "f1_aut_wide"
     # map_name = "berlin"
     # map_name = "race_track"
-    # map_name = "example_map"
+    map_name = "example_map"
     
 
     pre_map = PreMap(conf, map_name)
